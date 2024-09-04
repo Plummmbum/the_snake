@@ -99,7 +99,8 @@ class Snake(GameObject):
 
     def update_direction(self):
         """Этот метод описывает изменение
-        направления движения змейки."""
+        направления движения змейки.
+        """
         if self.next_direction:
             self.direction = self.next_direction
         self.next_direction = None
