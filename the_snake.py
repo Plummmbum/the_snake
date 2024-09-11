@@ -11,11 +11,11 @@ GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 ALL_CELLS = ((GRID_WIDTH - 1) * (GRID_HEIGHT - 1))
 
 # Направления движения:
-UP = (0, 1)
-DOWN = (0, -1)
+UP = (0, -1)
+DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
-DIRECTIONS = [RIGHT, UP, DOWN, LEFT]
+DIRECTIONS = [RIGHT, LEFT, UP, DOWN]
 
 # Цвет фона - черный:
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
@@ -122,33 +122,11 @@ class Snake(GameObject):
         x, y = head
         self.update_direction()
 
-        def direction_x(given_direction):
-            if given_direction == 'RIGHT':
-                position_x = (x + GRID_SIZE) % SCREEN_WIDTH
-            elif given_direction == 'LEFT':
-                position_x = (x - GRID_SIZE) % SCREEN_WIDTH
+        x = (x + GRID_SIZE * self.direction[0]) % SCREEN_WIDTH
+        y = (y + GRID_SIZE * self.direction[1]) % SCREEN_HEIGHT
 
-            self.positions.insert(0, (position_x, y))
-
-        def direction_y(given_direction):
-            if given_direction == 'UP':
-                position_y = (y - GRID_SIZE) % SCREEN_HEIGHT
-            elif given_direction == 'DOWN':
-                position_y = (y + GRID_SIZE) % SCREEN_HEIGHT
-
-            self.positions.insert(0, (x, position_y))
-
-        if self.direction == RIGHT:
-            direction_x('RIGHT')
-
-        elif self.direction == LEFT:
-            direction_x('LEFT')
-
-        elif self.direction == UP:
-            direction_y('UP')
-
-        elif self.direction == DOWN:
-            direction_y('DOWN')
+        new_position = (x, y)
+        self.positions.insert(0, new_position)
 
         if len(self.positions) > self.length:
             self.last = self.positions[-1]
