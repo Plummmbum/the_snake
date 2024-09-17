@@ -54,6 +54,7 @@ class GameObject:
     def __init__(self) -> None:
         self.position = (GRID_WIDTH // 2, GRID_HEIGHT // 2)
         self.body_color = None
+        self.positions = None
 
     def draw(self):
         """Этот метод отвечает за иллюстрирование
@@ -66,24 +67,25 @@ class Apple(GameObject):
     Он описывает параметры яблочка и действия с ним.
     """
 
-    def __init__(self):
+    def __init__(self, occupied_cells):
         super().__init__()
         self.body_color = APPLE_COLOR
         self.position = self.randomize_position()
+        self.occupied_cells = occupied_cells
 
     def randomize_position(self):
-        """Этот метод устанавливает
-        случайное положение яблочка на игровом поле.
+        """Этот метод устанавливает случайное
+        положение яблочка на игровом поле.
         """
-        all_cells = set()
-        for i in range(ALL_CELLS):
+        random_num_1 = randint(0, GRID_WIDTH - 1) * GRID_SIZE
+        random_num_2 = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        self.position = (random_num_1, random_num_2)
+
+        while self.position in self.occupied_cells:
             random_num_1 = randint(0, GRID_WIDTH - 1) * GRID_SIZE
             random_num_2 = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-            all_cells.add((random_num_1, random_num_2))
-
-        free_cells = all_cells - set(self.position)
-        chosen_cell = choice(list(free_cells))
-        return chosen_cell
+            self.position = (random_num_1, random_num_2)
+        return self.position
 
     def draw(self):
         """Этот метод отвечает за иллюстрирование
@@ -118,8 +120,7 @@ class Snake(GameObject):
 
     def move(self):
         """Данный метод описывает движение змейки на игровом поле."""
-        head = self.get_head_position()
-        x, y = head
+        x, y = self.get_head_position()
         self.update_direction()
 
         x = (x + GRID_SIZE * self.direction[0]) % SCREEN_WIDTH
@@ -192,8 +193,8 @@ def main():
     # Инициализация PyGame:
     pg.init()
     # Тут нужно создать экземпляры классов.
-    apple = Apple()
     snake = Snake()
+    apple = Apple(snake.positions)
 
     while True:
         clock.tick(SPEED)
