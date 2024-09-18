@@ -67,7 +67,7 @@ class Apple(GameObject):
     Он описывает параметры яблочка и действия с ним.
     """
 
-    def __init__(self, occupied_cells):
+    def __init__(self, occupied_cells=None):
         super().__init__()
         self.body_color = APPLE_COLOR
         self.occupied_cells = occupied_cells
