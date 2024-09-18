@@ -70,8 +70,8 @@ class Apple(GameObject):
     def __init__(self, occupied_cells):
         super().__init__()
         self.body_color = APPLE_COLOR
-        self.position = self.randomize_position()
         self.occupied_cells = occupied_cells
+        self.position = self.randomize_position()
 
     def randomize_position(self):
         """Этот метод устанавливает случайное
@@ -84,8 +84,7 @@ class Apple(GameObject):
         while self.position in self.occupied_cells:
             random_num_1 = randint(0, GRID_WIDTH - 1) * GRID_SIZE
             random_num_2 = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-            self.position = (random_num_1, random_num_2)
-        return self.position
+        return random_num_1, random_num_2
 
     def draw(self):
         """Этот метод отвечает за иллюстрирование
